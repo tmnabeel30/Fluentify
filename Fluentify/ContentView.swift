@@ -9,57 +9,167 @@ import SwiftUI
 
 struct ContentView: View {
     
-    // Example data for user and bot messages
-      let userMessages = ["Hi, how are you?", "Can you help me improve my English?"]
-      let botMessages = ["Hello! I'm here to help.", "Of course! Let's get started."]
+    
+    @State private var message = ""
+      @State private var messages = ["Hello! How can I assist you today?"]
+      @State private var keyboardHeight: CGFloat = 0
       
       var body: some View {
           VStack {
               ScrollView {
-                  VStack {
-                      ForEach(userMessages.indices, id: \.self) { index in
+                  ForEach(messages, id: \.self) { message in
+                      if message.contains("user") {
                           HStack {
                               Spacer()
-                              Text(userMessages[index])
-                                  .padding(10)
+                              Text(message)
+                                  .padding()
                                   .background(Color.blue)
-                                  .foregroundColor(Color.white)
-                                  .cornerRadius(10)
-                                  .padding(EdgeInsets(top: 6, leading: 10, bottom: 6, trailing: 10))
+                                  .foregroundColor(.white)
+                                  .clipShape(ChatBubble(isFromCurrentUser: true))
                           }
-                      }
-                      
-                      ForEach(botMessages.indices, id: \.self) { index in
+                      } else {
                           HStack {
-                              Text(botMessages[index])
-                                  .padding(10)
-                                  .background(Color.green)
-                                  .foregroundColor(Color.white)
-                                  .cornerRadius(10)
-                                  .padding(EdgeInsets(top: 6, leading: 10, bottom: 6, trailing: 10))
+                              Text(message)
+                                  .padding()
+                                  .background(Color.gray)
+                                  .foregroundColor(.white)
+                                  .clipShape(ChatBubble(isFromCurrentUser: false))
                               Spacer()
                           }
                       }
                   }
               }
-              
-              // Text input field for user to enter messages
               HStack {
-                  TextField("Type your message here...", text: .constant(""))
+                  TextField("Type a message...", text: $message)
                       .textFieldStyle(RoundedBorderTextFieldStyle())
-                      .padding(.horizontal)
-                  Button(action: {
-                      // Add user's message to the list of user messages
-                  }) {
-                      Text("Send")
+                      .padding()
+                      .background(Color.white)
+                      .clipShape(Capsule())
+                      .onTapGesture {
+                          addKeyboardObserver()
+                      }
+                  Button("Send") {
+                      messages.append("user: " + message)
+                      message = ""
+                      removeKeyboardObserver()
                   }
-                  .padding(.trailing)
+                  .padding()
+                  .foregroundColor(.white)
+                  .background(Color.blue)
+                  .clipShape(Circle())
               }
-              .padding(EdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16))
+              .padding()
+              .background(Color.gray.opacity(0.1))
+              .offset(y: -keyboardHeight)
+              .animation(.easeInOut(duration: 0.3))
           }
-          .navigationTitle("Chat")
+          .edgesIgnoringSafeArea(.bottom)
+          .onTapGesture {
+              hideKeyboard()
+          }
+      }
+      
+      func addKeyboardObserver() {
+          NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { (notification) in
+              guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+              keyboardHeight = keyboardFrame.height
+          }
+      }
+      
+      func removeKeyboardObserver() {
+          NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+      }
+      
+      func hideKeyboard() {
+          UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
       }
   }
+
+
+struct ChatBubble: Shape {
+    var isFromCurrentUser: Bool
+    
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: [.topLeft, .topRight, isFromCurrentUser ? .bottomLeft : .bottomRight], cornerRadii: CGSize(width: 16, height: 16))
+        return Path(path.cgPath)
+    }
+}
+
+struct ChatView: View {
+    @State private var message = ""
+    @State private var messages = ["Hello! How can I assist you today?"]
+    @State private var keyboardHeight: CGFloat = 0
+    
+    var body: some View {
+        VStack {
+            ScrollView {
+                ForEach(messages, id: \.self) { message in
+                    if message.contains("user") {
+                        HStack {
+                            Spacer()
+                            Text(message)
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .clipShape(ChatBubble(isFromCurrentUser: true))
+                        }
+                    } else {
+                        HStack {
+                            Text(message)
+                                .padding()
+                                .background(Color.gray)
+                                .foregroundColor(.white)
+                                .clipShape(ChatBubble(isFromCurrentUser: false))
+                            Spacer()
+                        }
+                    }
+                }
+            }
+            HStack {
+                TextField("Type a message...", text: $message)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                    .background(Color.white)
+                    .clipShape(Capsule())
+                    .onTapGesture {
+                        addKeyboardObserver()
+                    }
+                Button("Send") {
+                    messages.append("user: " + message)
+                    message = ""
+                    removeKeyboardObserver()
+                }
+                .padding()
+                .foregroundColor(.white)
+                .background(Color.blue)
+                .clipShape(Circle())
+            }
+            .padding()
+            .background(Color.gray.opacity(0.1))
+            .offset(y: -keyboardHeight)
+            .animation(.easeInOut(duration: 0.3))
+        }
+        .edgesIgnoringSafeArea(.bottom)
+        .onTapGesture {
+            hideKeyboard()
+        }
+    }
+    
+    func addKeyboardObserver() {
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { (notification) in
+            guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+            keyboardHeight = keyboardFrame.height
+        }
+    }
+    
+    func removeKeyboardObserver() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+    }
+    
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
