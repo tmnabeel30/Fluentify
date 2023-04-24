@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D5E160229F6B4AC00D85E4E /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = 5D5E160129F6B4AC00D85E4E /* OpenAI */; };
 		5D9064A029F342F1007A9889 /* FluentifyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D90649F29F342F1007A9889 /* FluentifyApp.swift */; };
 		5D9064A229F342F1007A9889 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9064A129F342F1007A9889 /* ContentView.swift */; };
 		5D9064A429F342F3007A9889 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D9064A329F342F3007A9889 /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D5E160229F6B4AC00D85E4E /* OpenAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +85,9 @@
 			dependencies = (
 			);
 			name = Fluentify;
+			packageProductDependencies = (
+				5D5E160129F6B4AC00D85E4E /* OpenAI */,
+			);
 			productName = Fluentify;
 			productReference = 5D90649C29F342F1007A9889 /* Fluentify.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +116,9 @@
 				Base,
 			);
 			mainGroup = 5D90649329F342F1007A9889;
+			packageReferences = (
+				5D5E160029F6B4AC00D85E4E /* XCRemoteSwiftPackageReference "OpenAI" */,
+			);
 			productRefGroup = 5D90649D29F342F1007A9889 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -280,7 +288,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Tcode.Fluentify;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Tncode.Fluentify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -309,7 +317,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Tcode.Fluentify;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Tncode.Fluentify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -339,6 +347,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5D5E160029F6B4AC00D85E4E /* XCRemoteSwiftPackageReference "OpenAI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MacPaw/OpenAI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5D5E160129F6B4AC00D85E4E /* OpenAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D5E160029F6B4AC00D85E4E /* XCRemoteSwiftPackageReference "OpenAI" */;
+			productName = OpenAI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5D90649429F342F1007A9889 /* Project object */;
 }
