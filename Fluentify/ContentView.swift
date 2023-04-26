@@ -87,7 +87,7 @@ struct ChatView: View {
                     removeKeyboardObserver()
                     openai.completions(query: .init(model: .textDavinci_003, prompt: message, temperature: 0, maxTokens: 100, topP: 1, frequencyPenalty: 0, presencePenalty: 0, stop: ["\\n"])) { result in
                       //Handle response here
-                        print(CompletionsResult.Choice(text: <#T##String#>, index: 0)
+                        print(result)
                         
                         message = ""
                     }
