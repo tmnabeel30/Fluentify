@@ -44,7 +44,7 @@ struct ChatView: View {
     @State private var message = ""
     @State private var messages = ["AI: Hello! How can I assist you today?"]
     @State private var keyboardHeight: CGFloat = 0
-    let openai = OpenAI(apiToken: "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")
+    let openai = OpenAI(apiToken: "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")
     
     
     var body: some View {
@@ -86,9 +86,21 @@ struct ChatView: View {
                     
                     removeKeyboardObserver()
                     openai.completions(query: .init(model: .textDavinci_003, prompt: message, temperature: 0, maxTokens: 100, topP: 1, frequencyPenalty: 0, presencePenalty: 0, stop: ["\\n"])) { result in
-                      //Handle response here
-                        print(result)
-                        
+                        //Handle response here
+                        switch result {
+                        case .success(let completionsResult):
+                            if let firstChoice = completionsResult.choices.first {
+                                let text = firstChoice.text.trimmingCharacters(in: .whitespacesAndNewlines)
+                                print("Text: \(text)")
+                                messages.append("AI: " + text)
+                                
+                            } else {
+                                print("No choices found in the result.")
+                            }
+                        case .failure(let error):
+                            print("Error: \(error.localizedDescription)")
+                        }
+
                         message = ""
                     }
                 }
