@@ -41,10 +41,11 @@ struct CompletionsResult: Codable {
 }
 
 struct ChatView: View {
+    
     @State private var message = ""
     @State private var messages = ["AI: Hello! How can I assist you today?"]
     @State private var keyboardHeight: CGFloat = 0
-    let openai = OpenAI(apiToken: "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")
+    let openai = OpenAI(apiToken: "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")
     
     
     var body: some View {
