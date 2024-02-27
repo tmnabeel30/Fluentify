@@ -1,4 +1,4 @@
-# Fluentify iOS App
+c# Fluentify iOS App
 
 **Helping students become fluent in any language.**
 
@@ -18,7 +18,7 @@ Fluentify is a language learning iOS application designed to make language acqui
 
 Follow these steps to get Fluentify up and running on your local machine:
 
-1. Clone the repository: `git clone https://github.com/your-username/Fluentify.git`
+1. Clone the repository: `git clone https://github.com/tmnabeel30/Fluentify.git`
 2. Navigate to the project directory: `cd Fluentify`
 3. Install dependencies: `pod install` (if using CocoaPods)
 4. Open the Xcode project: `open Fluentify.xcworkspace`
